@@ -1,0 +1,96 @@
+#include <stdio.h> 
+void logEvent(const char *event, int occupancy, int capacity){
+FILE *file = fopen("data/occupancy_log.csv", "a");
+if (file == NULL){
+printf("Error opening log file.\n");
+return;
+}
+fprintf(file, "%s,%d,%d\n", event, occupancy, capacity);
+fclose(file);
+}
+int main()
+{
+
+	int capacity = 5;
+	int occupancy = 0;;
+	int choice;
+
+//Keep program running until user exits
+
+while (1) 
+{
+	printf("\nStudy Room Occupancy Tracker\n");
+	printf("Current Occupancy: %d/%d\n", occupancy, capacity);
+if (occupancy == capacity)
+{
+printf("Status: ROOM FULL\n");;
+}
+else
+{
+printf ("STATUS: SPACE AVAILABLE\n");
+}
+printf("\n1. Student enters\n");
+printf("2. Student exits\n");
+printf("3. Change room capacity\n");
+printf("4. Exit Program\n");
+printf("Enter choice: ");
+
+if (scanf("%d", &choice) != 1)
+{
+printf ("Invalid input.\n");
+return 1;
+}
+
+if (choice == 1) 
+{
+if (occupancy < capacity) 
+{
+occupancy ++;
+printf("Student entered.\n");
+logEvent("ENTER", occupancy, capacity);
+}
+else
+{
+printf("Room is full. Entry denied.\n");
+}
+} 
+
+else if (choice == 2) {
+if (occupancy > 0) {
+occupancy--;
+printf("Student exited.\n");
+logEvent("EXIT", occupancy, capacity);
+} else {
+printf("room is empty.\n");
+}
+}
+
+else if (choice == 3) {
+int newCapacity;
+printf("Enter new capacity: ");
+
+if(scanf("%d", &newCapacity) != 1) {
+printf("Invalid input.\n");
+return 1;
+}
+
+if (newCapacity > 0 && newCapacity >= occupancy) {
+capacity = newCapacity;
+printf("Capacity updated.\n");
+logEvent("CAPACITY_CHANGED", occupancy, capacity);
+} else {
+printf("Invalid capacity.\n");
+}
+}
+
+else if (choice == 4) {
+printf("Exiting program.\n");
+break;
+}
+else {
+printf("Invalid choice.\n");
+}
+}
+return 0;
+}
+
