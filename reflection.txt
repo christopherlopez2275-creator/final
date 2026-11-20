@@ -1,0 +1,19 @@
+Reflection Questions :
+
+#1 What was your primary contribution to the project?
+- I did the entire project
+
+#2 What was the most challenging technical problem?
+- Getting github and the rasperry pi code to sync up and figuring out how to have everything 
+connected together
+
+#3 How did your team use testing or debugging to solve a problem?
+- I tested each potential problem case such as going negative or above room capacity
+Then I placed in the code safeguards for those issues
+
+#4 Which skills from CSE 1105 were most useful?
+-Navigating the pi and learning terminal commands
+
+#5 WHat would you improve if you had more time?
+-I would add other status options for the LED, such as having it be green when there is space.
+
