@@ -1,3 +1,5 @@
+#include <pigpio.h>
+#define LED_PIN 17
 #include <stdio.h> 
 void logEvent(const char *event, int occupancy, int capacity){
 FILE *file = fopen("data/occupancy_log.csv", "a");
@@ -8,8 +10,25 @@ return;
 fprintf(file, "%s,%d,%d\n", event, occupancy, capacity);
 fclose(file);
 }
+void updateLED(int occupancy, int capacity) {
+if (occupancy >= capacity){
+gpioWrite(LED_PIN, 1);
+printf("LED Status: ON\n");
+} else {
+gpioWrite(LED_PIN, 0);
+printf("LED Status: Off\n");
+}
+}
+
 int main()
 {
+int gpioReady = (gpioInitialise() >= 0);
+if (gpioReady) {
+gpioSetMode(LED_PIN, PI_OUTPUT);
+gpioWrite(LED_PIN, 0); 
+} else { 
+printf ("GPIO unavailable. LED simulation only.\n");
+}
 
 	int capacity = 5;
 	int occupancy = 0;;
@@ -28,6 +47,11 @@ printf("Status: ROOM FULL\n");;
 else
 {
 printf ("STATUS: SPACE AVAILABLE\n");
+}
+if (gpioReady) {
+updateLED(occupancy, capacity); 
+} else { 
+printf("LED Status : %s\n", occupancy >= capacity ? "ON" : "OFF");
 }
 printf("\n1. Student enters\n");
 printf("2. Student exits\n");
@@ -90,6 +114,10 @@ break;
 else {
 printf("Invalid choice.\n");
 }
+}
+if (gpioReady) {
+gpioWrite(LED_PIN, 0);
+gpioTerminate();
 }
 return 0;
 }
